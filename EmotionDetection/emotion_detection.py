@@ -12,6 +12,11 @@ def emotion_detector(text_to_analyze):
 
     # Making request
     response = requests.post(url, json = my_obj, headers = header)
+
+    # If response is 400 for empty values, return Nones
+    if response.status_code == 400:
+        return {"anger": None, "disgust": None, "fear": None, "joy": None, "sadness": None, "dominant_emotion": None}
+    
     formatted_response = json.loads(response.text)
 
     # Extracting emotions

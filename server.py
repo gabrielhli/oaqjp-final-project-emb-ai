@@ -10,7 +10,7 @@ from EmotionDetection.emotion_detection import emotion_detector
 app = Flask("Emotion Detection")
 
 @app.route("/emotionDetector")
-def emotionDetector():
+def run_emotion_detector():
     ''' This executes emotion_detector '''
     # Retrieve text to analyze
     text_to_analyze = request.args.get('textToAnalyze')
@@ -26,8 +26,14 @@ def emotionDetector():
     sadness = response['sadness']
     dominant = response['dominant_emotion']
 
+    # Return error if empty response received is empty
+    if anger is None:
+        return "Invalid text! Please try again!"
+
     # Return
-    return f"For the given statement, the system response is 'anger': {anger}, 'disgust': {disgust}, 'fear': {fear},' joy': {joy}, 'sadness': {sadness}. The dominant emotion is {dominant}"
+    return (f"For the given statement, the system response is 'anger': {anger},"
+    f" 'disgust': {disgust}, 'fear': {fear},' joy': {joy}, 'sadness': {sadness}."
+    f" The dominant emotion is {dominant}")
 
 @app.route("/")
 def render_index():
@@ -35,5 +41,5 @@ def render_index():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    ''' This function executes the flask app on localhost:5000 '''
+    #This function executes the flask app on localhost:5000
     app.run(host = "0.0.0.0", port = 5000)
